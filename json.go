@@ -17,9 +17,7 @@ func JSON(w http.ResponseWriter, status int, data any) {
 
 	err := json.NewEncoder(buffer).Encode(data)
 	if err != nil {
-		w.Header().Add("Content-Type", "text/plain")
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Failed to encode json response."))
+		http.Error(w, "Failed to encode JSON response.", http.StatusInternalServerError)
 		return
 	}
 
@@ -39,9 +37,7 @@ func JSONError(w http.ResponseWriter, status int, message string) {
 
 	err := json.NewEncoder(buffer).Encode(payload)
 	if err != nil {
-		w.Header().Add("Content-Type", "text/plain")
-		w.WriteHeader(status)
-		w.Write([]byte("Failed to encode json response."))
+		http.Error(w, "Failed to encode JSON response.", status)
 		return
 	}
 

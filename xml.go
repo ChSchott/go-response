@@ -18,9 +18,7 @@ func XML(w http.ResponseWriter, status int, data any) {
 
 	err := xml.NewEncoder(buffer).Encode(data)
 	if err != nil {
-		w.Header().Add("Content-Type", "text/plain")
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Failed to encode xml response."))
+		http.Error(w, "Failed to encode XML response.", http.StatusInternalServerError)
 		return
 	}
 
@@ -40,9 +38,7 @@ func XMLError(w http.ResponseWriter, status int, message string) {
 
 	err := xml.NewEncoder(buffer).Encode(payload)
 	if err != nil {
-		w.Header().Add("Content-Type", "text/plain")
-		w.WriteHeader(status)
-		w.Write([]byte("Failed to encode json response."))
+		http.Error(w, "Failed to encode XML response.", status)
 		return
 	}
 
